@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kalkulator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #efe9ee;
+    --bg2: #e3d6df;
+    --card: #fbf8fa;
+    --ink: #2b1f2e;
+    --muted: #7d6e83;
+    --line: #dccfd8;
+    --accent: #8a4f66;
+    --accent-ink: #ffffff;
+    --error: #a3342f;
+    --shadow: 0 30px 60px -30px rgba(70, 30, 60, .35);
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #171019; --bg2: #241a29; --card: #261d2c; --ink: #f2eaf4;
+      --muted: #a898ae; --line: #3a2d41; --accent: #e0b8a6; --accent-ink: #2b1a20;
+      --error: #f08a84; --shadow: 0 30px 60px -30px rgba(0, 0, 0, .7);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #171019; --bg2: #241a29; --card: #261d2c; --ink: #f2eaf4;
+    --muted: #a898ae; --line: #3a2d41; --accent: #e0b8a6; --accent-ink: #2b1a20;
+    --error: #f08a84; --shadow: 0 30px 60px -30px rgba(0, 0, 0, .7);
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px 16px;
+    font-family: "Jost", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    background-image: radial-gradient(ellipse at 20% 0%, var(--bg2), transparent 60%);
+  }
+  .kalkulator {
+    width: 100%;
+    max-width: 400px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    padding: 36px 32px 32px;
+    box-shadow: var(--shadow);
+  }
+  h1 {
+    margin: 0 0 4px;
+    font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    font-size: 2.1rem;
+    letter-spacing: .01em;
+  }
+  .sub { margin: 0 0 28px; color: var(--muted); font-weight: 300; font-size: .95rem; }
+  label { display: block; margin-bottom: 6px; font-size: .85rem; color: var(--muted); }
+  input[type="number"] {
+    width: 100%;
+    padding: 12px 2px;
+    margin-bottom: 20px;
+    font: 400 1.25rem "Jost", system-ui, sans-serif;
+    color: var(--ink);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    border-radius: 0;
+    outline: none;
+    transition: border-color .2s;
+  }
+  input[type="number"]:focus { border-bottom-color: var(--accent); }
+  input[type="number"]:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  .operator {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin: 8px 0 28px;
+  }
+  .operator button {
+    aspect-ratio: 1;
+    font: 400 1.6rem "Jost", system-ui, sans-serif;
+    color: var(--ink);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background .2s, color .2s, border-color .2s, transform .1s;
+  }
+  .operator button:hover { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .operator button:active { transform: scale(.94); }
+  .operator button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  #hasil {
+    margin: 0;
+    padding: 20px 18px;
+    min-height: 4.5rem;
+    display: flex;
+    align-items: center;
+    font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+    background: var(--bg);
+    border-radius: 16px;
+  }
+  #hasil.error { color: var(--error); font-family: "Jost", system-ui, sans-serif; font-size: 1rem; }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+  <main class="kalkulator">
+    <h1>Kalkulator</h1>
+    <p class="sub">Masukkan dua angka, lalu pilih operasi.</p>
+
+    <label for="angka1">Angka pertama</label>
+    <input type="number" id="angka1" placeholder="0" step="any">
+
+    <label for="angka2">Angka kedua</label>
+    <input type="number" id="angka2" placeholder="0" step="any">
+
+    <div class="operator" role="group" aria-label="Operasi hitung">
+      <button id="tambah" aria-label="Tambah">+</button>
+      <button id="kurang" aria-label="Kurang">−</button>
+      <button id="kali" aria-label="Kali">×</button>
+      <button id="bagi" aria-label="Bagi">÷</button>
+    </div>
+
+    <p id="hasil" aria-live="polite">Hasil: –</p>
+  </main>
+
+<script src="script.js"></script>
+</body>
+</html>
